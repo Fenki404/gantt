@@ -876,8 +876,11 @@ class Arrow {
     }
 
     calculate_path() {
-        let start_x =
-            this.from_task.$bar.getX() + this.from_task.$bar.getWidth() / 2;
+        let start_x = this.from_task.$bar.getX() + this.from_task.$bar.getWidth() / 2;
+
+        if (this.from_task.arrowAtEnd) {
+          start_x = this.from_task.$bar.getX() + this.from_task.$bar.getWidth();
+        }
 
         const condition = () =>
             this.to_task.$bar.getX() < start_x + this.gantt.options.padding &&
@@ -887,12 +890,15 @@ class Arrow {
             start_x -= 10;
         }
 
-        const start_y =
+        let start_y =
             this.gantt.options.header_height +
             this.gantt.options.bar_height +
-            (this.gantt.options.padding + this.gantt.options.bar_height) *
-                this.from_task.task._index +
+            (this.gantt.options.padding + this.gantt.options.bar_height) * this.from_task.task._index +
             this.gantt.options.padding;
+
+        if (this.from_task.arrowAtEnd) {
+          start_y -= this.gantt.options.bar_height * 0.5;
+        }
 
         const end_x = this.to_task.$bar.getX() - this.gantt.options.padding / 2;
         const end_y =
